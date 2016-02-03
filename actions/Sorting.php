@@ -24,7 +24,7 @@ class Sorting extends Action
                 if ($model === null) {
                     throw new BadRequestHttpException();
                 }
-                $model->{$this->orderAttribute} = $order;
+                $model->{$this->orderAttribute} = $order + 1;
                 $model->update(false, [$this->orderAttribute]);
             }
             $transaction->commit();
