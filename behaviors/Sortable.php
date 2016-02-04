@@ -11,6 +11,11 @@ class Sortable extends Behavior
     /** @var Query */
     public $query;
 
+    /**
+     * @var array $where
+     */
+    public $where = null;
+
     /** @var string */
     public $orderAttribute = 'order';
 
@@ -23,6 +28,11 @@ class Sortable extends Behavior
 
     public function beforeInsert()
     {
+        if (!is_null($this->where)) {
+            foreach (array($this->where) as $where) {
+                $this->query->andWhere([$where => $this->owner->{$where}]);
+            }
+        }
         $last = $this->query->orderBy([$this->orderAttribute => SORT_DESC])->limit(1)->one();
         if ($last === null) {
             $this->owner->{$this->orderAttribute} = 1;
