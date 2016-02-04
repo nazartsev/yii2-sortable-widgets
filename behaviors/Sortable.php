@@ -29,7 +29,10 @@ class Sortable extends Behavior
     public function beforeInsert()
     {
         if (!is_null($this->where)) {
-            foreach (array($this->where) as $where) {
+            if (!is_array($this->where)) {
+                $this->where = array($this->where);
+            }
+            foreach ($this->where as $where) {
                 $this->query->andWhere([$where => $this->owner->{$where}]);
             }
         }
